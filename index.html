@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertanyaan Spesial</title>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #e91e63;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ff4081;
+            border-radius: 10px;
+        }
+
+        .buttons button {
+            padding: 10px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            font-weight: bold;
+        }
+
+        #yes-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #yes-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        #no-btn {
+            background-color: #f44336;
+            color: white;
+            transition: none;
+        }
+
+        #no-btn:hover {
+            background-color: #e53935;
+            transform: scale(1.05);
+        }
+
+        #result-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: left;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Efek 'TIDAK' yang lari-lari */
+        .moving {
+            position: absolute;
+            transition: top 0.1s ease-out, left 0.1s ease-out;
+            z-index: 1000; 
+        }
+
+        .question-box-hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hai Gloria aku ada pertanyaan Penting Nih</h1>
+        <p>Selama ini aku nyaman banget sama kamu. Aku mau nanya...</p>
+        
+        <div class="question-box" id="q-box">
+            <h2>I Have Crush On You?</h2>
+            <div class="buttons">
+                <button id="yes-btn">IYA</button>
+                <button id="no-btn">TIDAK</button>
+            </div>
+        </div>
+        
+        <p id="result-message" class="hidden"></p>
+
+        <audio id="success-sound" src="/music/Anugerah Terindah x Penjaga Hati x Somebody's Pleasure.mp3" preload="auto"></audio>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+            const resultMessage = document.getElementById('result-message');
+            const questionBox = document.getElementById('q-box');
+            // Ambil elemen audio
+            const successSound = document.getElementById('success-sound'); 
+            
+            // Atur volume agar tidak terlalu keras
+            successSound.volume = 0.5;
+
+            // 1. Fungsi untuk tombol 'IYA'
+            yesBtn.addEventListener('click', () => {
+                // Mainkan lagu
+                successSound.play().catch(error => {
+                    console.error("Gagal memutar lagu. Browser mungkin memblokir autoplay.", error);
+                    // Anda bisa menambahkan pesan fallback di sini jika lagu gagal diputar
+                });
+
+                resultMessage.textContent = '🥳 YESS! Aku senang banget! Terima kasih sudah mau jadi bagian dari hidupku!';
+                resultMessage.style.backgroundColor = '#d4edda';
+                resultMessage.style.color = '#155724';
+                resultMessage.classList.remove('hidden');
+                
+                questionBox.classList.add('question-box-hidden');
+            });
+
+            // 2. Fungsi untuk tombol 'TIDAK' (Buat lari-lari)
+            noBtn.addEventListener('mouseover', (e) => {
+                if (questionBox.classList.contains('question-box-hidden')) return;
+
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                const buttonWidth = noBtn.offsetWidth;
+                const buttonHeight = noBtn.offsetHeight;
+                
+                const safeMargin = 100;
+
+                const newLeft = Math.random() * (viewportWidth - buttonWidth - 2 * safeMargin) + safeMargin;
+                const newTop = Math.random() * (viewportHeight - buttonHeight - 2 * safeMargin) + safeMargin;
+
+                noBtn.classList.add('moving');
+                noBtn.style.left = `${newLeft}px`;
+                noBtn.style.top = `${newTop}px`;
+            });
+            
+            // 3. Jika tombol TIDAK diklik
+            noBtn.addEventListener('click', () => {
+                // Hentikan lagu jika sedang main (untuk berjaga-jaga)
+                successSound.pause();
+                successSound.currentTime = 0;
+
+                noBtn.classList.remove('moving');
+                noBtn.style.left = '';
+                noBtn.style.top = '';
+
+                resultMessage.textContent = '😔 Oh, begitu ya. Terima kasih sudah jujur. Semoga kita tetap bisa berteman baik.';
+                resultMessage.style.backgroundColor = '#f8d7da';
+                resultMessage.style.color = '#721c24';
+                resultMessage.classList.remove('hidden');
+                
+                questionBox.classList.add('question-box-hidden');
+            });
+        });
+    </script>
+</body>
+</html>
