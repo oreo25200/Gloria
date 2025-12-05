@@ -162,21 +162,21 @@
             });
             
             // 3. Jika tombol TIDAK diklik
-            noBtn.addEventListener('click', () => {
+            //noBtn.addEventListener('click', () => {
                 // Hentikan lagu jika sedang main (untuk berjaga-jaga)
-                successSound.pause();
-                successSound.currentTime = 0;
+               // successSound.pause();
+                //successSound.currentTime = 0;
 
-                noBtn.classList.remove('moving');
-                noBtn.style.left = '';
-                noBtn.style.top = '';
+               // noBtn.classList.remove('moving');
+               // noBtn.style.left = '';
+                //noBtn.style.top = '';
 
                 //resultMessage.textContent = '😔 Oh, begitu ya. Terima kasih sudah jujur. Semoga kita tetap bisa berteman baik.';
                 //resultMessage.style.backgroundColor = '#f8d7da';
                 //resultMessage.style.color = '#721c24';
                // resultMessage.classList.remove('hidden');
                 
-                questionBox.classList.add('question-box-hidden');
+                //questionBox.classList.add('question-box-hidden');
             });
         });
     </script>
